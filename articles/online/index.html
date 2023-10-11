@@ -1,0 +1,308 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="description" content ="CS 61A: Structure and Interpretation of Computer Programs" />
+    <meta name="keywords" content ="CS 61A, Computer Science, CS, 61A, Programming, John DeNero, Berkeley, EECS" />
+    <meta name="author" content ="Satish Rao" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-throttle-debounce/1.1/jquery.ba-throttle-debounce.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/assets/js/hl.js"></script>
+    <script src="/assets/js/toggledarkmode.js"></script>
+    <script>
+        // we aren't registering builtins since
+        //      (1) they don't render differently in the current CSS from other names
+        //      (2) it's a mess to list all of them. You can extract from the site but that takes effort
+        // if (1) ceases to be true, (2) might be worth the effort. For now, we're leaving as is
+        hljsRegister({
+            'keyword': "define if cond and or let begin lambda mu quote delay cons-stream set! quasiquote unquote unquote-splicing define-macro"
+        });
+        hljs.initHighlightingOnLoad();
+    </script>
+    <script src="/assets/js/dark-mode.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata|Roboto:300,400,500|Work+Sans:400,700">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/mono-blue.css">
+    <link rel="icon" href="/assets/images/favicon.ico">
+
+    
+
+    <title>
+Online CS 61A | CS 61A Fall 2023
+</title>
+  </head>
+
+  <body id="index" class="home">
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container noselect">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-section">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">
+            <img style="max-width:60px; margin-top: -20px;" class="logo" src="/assets/images/logo.png"/>
+          </a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="navbar-collapse-section">
+          <ul class="nav navbar-nav navbar-right">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Calendar
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a href="/weekly">Weekly Schedule</a></li>
+                <li><a href="/office-hours">Office Hours</a></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Links
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a href="https://sections.cs61a.org">Sections Tool</a></li>
+                <li><a href="https://oh.cs61a.org">Office Hours Queue</a></li>
+                <li><a href="https://go.cs61a.org/regrades">Request a Regrade</a></li>
+                <li><a href="https://go.cs61a.org/zoom-lecture">Rao Zoom Lecture</a></li>
+                <li><a href="https://berkeley.zoom.us/j/98407898918">DeNero Zoom Lecture</a></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Staff
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a href="/instructor">Instructors</a></li>
+                <li><a href="/TAs">Rao TAs</a></li>
+                <li><a href="/TAs2">DeNero TAs</a></li>
+                <li><a href="/tutors">Rao Tutors</a></li>
+                <li><a href="/tutors2">DeNero Tutors</a></li>
+                <li><a href="/academic-interns">Rao Academic Interns</a></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Resources
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a href="https://go.cs61a.org/extensions">Request an Extension</a></li>
+                <li><a href="https://go.cs61a.org/regrades">Request a Regrade</a></li>
+                <li><a href="/articles/accommodations">Book an Accommodations Appointment</a></li>
+                <li><a href="/resources/">Topical Resources + Past Exams</a></li>
+                <li><a href="https://tutor.cs61a.org/">PythonTutor</a></li>
+                <li><a href="https://code.cs61a.org/">Code</a></li>
+                <li><a href="https://edstem.org/us/courses/42930/discussion/" target="_blank">Ed</a></li>
+                <li><a href="/articles/campus-res/">Department/Campus Resources</a></li>
+              </ul>
+            </li>
+            <li><a href="/articles/about">Syllabus</a></li>
+            <li><a href="/denero.html">DeNero</a></li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Rao
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a href="/">Rao Site</a></li>
+                <li><a href="https://go.cs61a.org/zoom-lecture">Rao Zoom Lecture</a></li>
+              </ul>
+            </li>
+            <li><a href="/contact/">Contact</a></li>
+            <li>
+              <label class="switch">
+                <input type="checkbox" id="toggle-mode-cb">
+                <span class="slider round"></span>
+              </label>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <main id="content" class="container">
+      
+<div class='row'>
+  <div class='col-md-9'>
+    <header>
+      <h1>Online CS 61A</h1>
+    </header>
+     <p>This page describes the online format of CS 61A. For general information about the course, see the <a href="/articles/about/">syllabus</a>.</p>
+
+<p>Students can officially enroll in CS 61A and take the course fully online. It is possible to take the course remotely from anywhere in the world. It is also possible for students enrolled in the on-campus course who need to travel away from Berkeley for part of term to continue participating using the online resources. Online offerings of CS 61A provide the same amount of course credit and fulfill all of the same requirements as the on-campus course.</p>
+
+
+<h2 id="online-vs-on-campus">Online vs On-Campus</h2>
+
+
+<p>All core aspects of the on-campus course are replicated in the online version of CS 61A, including lectures, labs, discussions, and office hours. All students use the same online discussion forum to ask questions and receive announcements. Optional small-group and one-on-one tutoring that is sometimes offered via student groups (CS Mentors) or pedagogy courses (CS 370) will not be available for online students.</p>
+
+<p>Our experience indicates that most students do benefit from the on-campus
+experience because in-person labs, discussions, and office hours are more
+conducive to participation and connecting with other students. So, if you have a
+choice between on-campus or online formats, choose on-campus. You can still use
+the online resources freely as you prefer.</p>
+
+
+<h2 id="enrolling-in-online-cs-61a">Enrolling in Online CS 61A</h2>
+
+
+<p>For Summer 2019, remote students should enroll in <a href="http://summer.berkeley.edu/courses/online/com-sci-w61a">CS W61A</a>, which fulfills all of the same requirements as <a href="https://classes.berkeley.edu/content/2019-summer-compsci-61a-001-lec-001">CS 61A</a>. Despite the fact that these two courses list different instructors, they will be taught together by the same instructor team. Tiffany Perumpail, Christopher Allsman, and Alex Stennet are the primary instructors, while John DeNero will support the course and produce lecture video content that will be available to all students enrolled in both courses. Students enrolled in W61A will be assigned to online lab and discussion, while CS 61A students will be assigned to on-campus lab and discussion.</p>
+
+<p>Online lab and discussion sections meet at a particular time and are hosted by the course staff in the same way as on-campus sections. See the course calendar for section times and connection instructions. Students are still expected to attend and participate, just like in an on-campus section.</p>
+
+
+<h2 id="auditing-online-cs-61a">Auditing Online CS 61A</h2>
+
+
+<p>All materials for the course are posted to <a href="https://cs61a.org">cs61a.org</a> and
+are freely available to remote students from around the world. You're welcome to
+work through them at your own pace (audit the course), but no course credit or
+support is available to students who are not officially enrolled.</p>
+
+
+<h2 id="exams">Exams</h2>
+
+
+<p>Online exams will be held at the same time as on-campus exams when possible. Exams are typically proctored via video conference, but in some cases an external live proctor can be arranged (for example if a group of students at a remote university are taking the course together). Summer final exams are proctored at testing centers around the world using an exam proctoring service. In general</p>
+
+
+<h2 id="software">Software</h2>
+
+
+<p>We use two tools to coordinate online sections, Slack and Zoom. Slack is a group
+chat application that runs all the time, so that students in online sections can
+coordinate with each other and the staff. Zoom is a video conferencing platform
+that is only available during section times.</p>
+
+<p><strong>Slack</strong>. If you are enrolled in an online section or wish to attend an online
+section even though you're enrolled in a regular section, join the online Slack
+by requesting an invitation here (only available when courses are in session):</p>
+
+<p><a href="https://slackin.app.cs61a.org">slackin.app.cs61a.org</a></p>
+
+<p>All online-specific coordination and announcements will be made through Slack. Check it! Ask your questions there for quick responses.</p>
+
+<p>Once you join Slack, you should join the channel for your section. That's where
+section-specific content will be posted.</p>
+
+<p><strong>Zoom</strong>. When you first join a Zoom meeting for discussion, you will be asked
+to <a href="https://zoom.us/download">download their software</a>. You can also join from a
+mobile device, but using your computer is better because you can share your
+screen with staff and other students. Read the <a href="https://cal-cs-61a-staff.github.io/static/zoom-for-students.pdf">Zoom student
+guide</a>. If you
+get stuck or don't know how to do something, there's a <code>#zoom</code> channel on Slack
+to ask questions.</p>
+
+
+<h2 id="handouts">Handouts</h2>
+
+
+<p>Discussion handouts are normally distributed in on-campus discussion sections. These are also posted to <a href="https://cs61a.org">cs61a.org</a>, and you can download them there. We recommend that you print out the handout in advance of each online discussion section.</p>
+
+<p>Lab does not have any printed material. Students use the same lab materials in
+online and on-campus lab sections.</p>
+
+
+<h2 id="getting-help">Getting Help</h2>
+
+
+<p>Online office hours will also be coordinated through Slack, and you will have opportunities to talk one-on-one with course staff members as needed.</p>
+
+<p>If you are enrolled in an online section but are able to come to campus, you are still welcome to come to on-campus office hours, homework parties, project parties, and review sessions.</p>
+
+<p>If you find that online sections don't work well for you, please contact one of
+the course instructor for guidance, such as John DeNero (denero@berkeley.edu).</p>
+  </div>
+
+  <div class='col-md-3 sticky'>
+    <nav class='hidden-print hidden-sm hidden-xs sidebar'>
+      <ul>
+  <li><a href="#online-vs-on-campus">Online vs On-Campus</a></li>
+  <li><a href="#enrolling-in-online-cs-61a">Enrolling in Online CS 61A</a></li>
+  <li><a href="#auditing-online-cs-61a">Auditing Online CS 61A</a></li>
+  <li><a href="#exams">Exams</a></li>
+  <li><a href="#software">Software</a></li>
+  <li><a href="#handouts">Handouts</a></li>
+  <li><a href="#getting-help">Getting Help</a></li>
+</ul>
+    </nav>
+  </div>
+</div>
+
+    </main>
+
+    <footer class="container">
+      <div class="row text-center">
+        <div class="col col-sm-4">
+          <h3><a href="/">CS 61A</a></h3>
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/weekly">Weekly Schedule</a></li>
+            <li><a href="/office-hours">Office Hours</a></li>
+            <li><a href="/staff">Staff</a></li>
+          </ul>
+        </div>
+        <div class="col col-sm-4">
+          <h3><a href="/resources">Resources</a></h3>
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/articles/studying">Studying Guide</a></li>
+            <li><a href="/articles/debugging">Debugging Guide</a></li>
+            <li><a href="/articles/composition">Composition Guide</a></li>
+            <li><a href="/articles/pair-programming">Pair Programming</a></li>
+          </ul>
+        </div>
+        <div class="col col-sm-4">
+          <h3><a href="/articles/about">Policies</a></h3>
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/articles/about#assignments">Assignments</a></li>
+            <li><a href="/articles/about#exams">Exams</a></li>
+            <li><a href="/articles/about#grading">Grading</a></li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/loader.min.js"></script>
+  <link rel="stylesheet" data-name="vs/editor/editor.main" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/editor/editor.main.min.css">
+  <script>
+      require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs' }});
+      window.MonacoEnvironment = { getWorkerUrl: () => URL.createObjectURL(new Blob([`
+      self.MonacoEnvironment = {
+          baseUrl: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min'
+      };
+      importScripts('https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/base/worker/workerMain.min.js');
+  `], { type: 'text/javascript' }))
+  };
+  </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.15.5/js/jsplumb.min.js"></script>
+    <script src="/assets/js/network_storage.js"></script>
+    <script src="/assets/js/storable.js"></script>
+    <script src="/assets/js/editor.js"></script>
+    <script src="/assets/js/copy-button.js"></script>
+    <script src="/assets/js/env-diagram.js"></script>
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.15.5/js/jsplumb.min.js"></script>
+<script src="/assets/js/storable.js"></script>
+<script src="/assets/js/env-diagram.js"></script>
+<script>
+  $('.sidebar ul').addClass('nav nav-stacked noselect');
+  $('body').scrollspy({
+    target: '.sidebar',
+    offset: 40
+  });
+</script>
+
+  </body>
+</html>

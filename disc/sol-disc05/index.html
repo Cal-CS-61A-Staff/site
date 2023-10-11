@@ -1,0 +1,1057 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="description" content ="CS 61A: Structure and Interpretation of Computer Programs" />
+    <meta name="keywords" content ="CS 61A, Computer Science, CS, 61A, Programming, John DeNero, Berkeley, EECS" />
+    <meta name="author" content ="Satish Rao" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-throttle-debounce/1.1/jquery.ba-throttle-debounce.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/assets/js/hl.js"></script>
+    <script src="/assets/js/toggledarkmode.js"></script>
+    <script>
+        // we aren't registering builtins since
+        //      (1) they don't render differently in the current CSS from other names
+        //      (2) it's a mess to list all of them. You can extract from the site but that takes effort
+        // if (1) ceases to be true, (2) might be worth the effort. For now, we're leaving as is
+        hljsRegister({
+            'keyword': "define if cond and or let begin lambda mu quote delay cons-stream set! quasiquote unquote unquote-splicing define-macro"
+        });
+        hljs.initHighlightingOnLoad();
+    </script>
+    <script src="/assets/js/dark-mode.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata|Roboto:300,400,500|Work+Sans:400,700">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/mono-blue.css">
+    <link rel="icon" href="/assets/images/favicon.ico">
+
+    
+
+<link rel="stylesheet" type="text/css" href="/assets/css/disc.css">
+
+
+    <title>
+Discussion 5 | CS 61A Fall 2023
+</title>
+  </head>
+
+  <body id="index" class="home">
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container noselect">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-section">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">
+            <img style="max-width:60px; margin-top: -20px;" class="logo" src="/assets/images/logo.png"/>
+          </a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="navbar-collapse-section">
+          <ul class="nav navbar-nav navbar-right">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Calendar
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a href="/weekly">Weekly Schedule</a></li>
+                <li><a href="/office-hours">Office Hours</a></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Links
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a href="https://sections.cs61a.org">Sections Tool</a></li>
+                <li><a href="https://oh.cs61a.org">Office Hours Queue</a></li>
+                <li><a href="https://go.cs61a.org/regrades">Request a Regrade</a></li>
+                <li><a href="https://go.cs61a.org/zoom-lecture">Rao Zoom Lecture</a></li>
+                <li><a href="https://berkeley.zoom.us/j/98407898918">DeNero Zoom Lecture</a></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Staff
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a href="/instructor">Instructors</a></li>
+                <li><a href="/TAs">Rao TAs</a></li>
+                <li><a href="/TAs2">DeNero TAs</a></li>
+                <li><a href="/tutors">Rao Tutors</a></li>
+                <li><a href="/tutors2">DeNero Tutors</a></li>
+                <li><a href="/academic-interns">Rao Academic Interns</a></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Resources
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a href="https://go.cs61a.org/extensions">Request an Extension</a></li>
+                <li><a href="https://go.cs61a.org/regrades">Request a Regrade</a></li>
+                <li><a href="/articles/accommodations">Book an Accommodations Appointment</a></li>
+                <li><a href="/resources/">Topical Resources + Past Exams</a></li>
+                <li><a href="https://tutor.cs61a.org/">PythonTutor</a></li>
+                <li><a href="https://code.cs61a.org/">Code</a></li>
+                <li><a href="https://edstem.org/us/courses/42930/discussion/" target="_blank">Ed</a></li>
+                <li><a href="/articles/campus-res/">Department/Campus Resources</a></li>
+              </ul>
+            </li>
+            <li><a href="/articles/about">Syllabus</a></li>
+            <li><a href="/denero.html">DeNero</a></li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Rao
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a href="/">Rao Site</a></li>
+                <li><a href="https://go.cs61a.org/zoom-lecture">Rao Zoom Lecture</a></li>
+              </ul>
+            </li>
+            <li><a href="/contact/">Contact</a></li>
+            <li>
+              <label class="switch">
+                <input type="checkbox" id="toggle-mode-cb">
+                <span class="slider round"></span>
+              </label>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <main id="content" class="container">
+      
+<div class='row'>
+  <div class='col-md-9'>
+    <header>
+      <h1>
+        
+Rao Discussion 5: Trees, Data Abstraction
+
+        
+        
+        <ul class="inline-block list-inline">
+          <li><a href="disc05.pdf" class="label label-outline">disc05.pdf</a></li>
+        </ul>
+        
+        
+      </h1>
+    </header>
+    
+
+<div class="alert storable-login-status"></div>
+
+<p>This discussion worksheet is for the Rao offering of CS 61A.
+Your work is not graded and you do not need to submit anything.</p>
+
+
+    
+<h1 id="data-abstraction">Data Abstraction</h1>
+
+
+<p>So far, we have encountered several data types:
+numbers, strings, booleans, lists, tuples, and dictionaries.
+But what if we want to represent more complicated things —
+such as the objects we encounter in real life?</p>
+
+<p>Enter the idea of <em>data abstraction</em>, which allows us to build
+and use objects in code that represent a compound value.</p>
+
+<p>An <em>abstract data type</em> consists of two types of functions:</p>
+
+<ul>
+  <li><strong>Constructors</strong>: functions that build instances of the abstract data type.</li>
+  <li><strong>Selectors</strong>: functions that retrieve information from instances of the ADT.</li>
+</ul>
+
+<p>An integral part of data abstraction is the concept of <em>abstraction</em>.
+Users of the abstract data type have access to an <em>interface</em> of defined
+actions (i.e. constructors and selectors) they can take with the ADT.
+The user of the ADT does <em>not</em> need to know how the constructors and
+selectors are implemented. The nature of <em>abstraction</em> allows whoever uses them to
+assume that the functions have been written correctly and work as described.</p>
+
+<p>This is called the <strong>abstraction barrier</strong>!</p>
+
+<p>In fact, interacting within an ADT outside of its interface of constructors
+and selectors is called "violating the abstraction barrier" and is
+strongly discouraged (even when it doesn't produce an error).</p>
+
+<p>In this way, data abstraction mimics how we think about the world.
+For example, a car is a complicated machine, but it has a simple interface
+by which we interact with it: the wheel, the gas pedal, the gear shift.
+If you want to drive a car, you don't need to know how the
+engine was built or what kind of material the tires are made of.
+It's easy to drive a car because of the suppression of complexity that
+abstraction provides us.</p>
+
+<p>For the car, the principle of the abstraction barrier also applies.
+If we want to start the car,
+we should use the provided interface of turning the ignition key, rather than
+getting out, popping the hood, and messing around with the engine.
+While you could likely do that if you had enough knowledge, it is
+unnecessarily costly and highly dependent on how exactly the car
+was constructed. What are you going to do if the car is electric?</p>
+
+<p>When you're writing code using ADTs that have been provided for you,
+make sure that you're never assuming
+anything about the ADT other than that it can be constructed
+with its constructor and its information can be accessed by selectors.
+Your code should never depend on the specific implementation of
+the ADT under the hood.</p>
+
+<div class="page-break"></div>
+
+
+<h2 id="rationals">Rationals</h2>
+
+
+
+<h3 id="q1-extending-rationals">Q1: Extending Rationals</h3>
+
+
+<p>First, fill in the following code to implement the rational ADT from lecture.</p>
+
+
+            
+            <b>Your Answer</b>
+            
+            <div class="monaco-storable" id="rat-input" style="height:468px;"></div>
+            <a href="javascript:void" id="modal-link-rat-input">Run in 61A Code</a>
+            <div class="modal fade" id="modal-rat-input" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content" style="padding-bottom: -5px">
+                    <iframe
+                        id="code-iframe-rat-input"
+                        width="100%"
+                        height="700px"
+                        style="border: none; display:block;"
+                    ></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="storable-status"></div>
+            <script>
+                $(() => activateEditor('from math import gcd\n\ndef make_rat(num, den):\n    &quot;&quot;&quot;Creates a rational number, given a numerator and denominator.\n\n    &gt;&gt;&gt; a = make_rat(2, 4)\n    &gt;&gt;&gt; numer(a)\n    1\n    &gt;&gt;&gt; denom(a)\n    2\n    &quot;&quot;&quot;\n    "*** YOUR CODE HERE ***"\n\ndef numer(rat):\n    &quot;&quot;&quot;Extracts the numerator from a rational number.&quot;&quot;&quot;\n    "*** YOUR CODE HERE ***"\n\ndef denom(rat):\n    &quot;&quot;&quot;Extracts the denominator from a rational number.&quot;&quot;&quot;\n    "*** YOUR CODE HERE ***"\n\n', "python", "rat-input"));
+            </script>
+        
+            <div class="sol-highlight">
+                <b>Solution</b>
+                
+<pre><code>from math import gcd
+
+def make_rat(num, den):
+    &quot;&quot;&quot;Creates a rational number, given a numerator and denominator.
+
+    &gt;&gt;&gt; a = make_rat(2, 4)
+    &gt;&gt;&gt; numer(a)
+    1
+    &gt;&gt;&gt; denom(a)
+    2
+    &quot;&quot;&quot;
+    gcd_fraction = gcd(num, den)
+    return (num // gcd_fraction, den // gcd_fraction)
+
+def numer(rat):
+    &quot;&quot;&quot;Extracts the numerator from a rational number.&quot;&quot;&quot;
+    return rat[0]
+
+def denom(rat):
+    &quot;&quot;&quot;Extracts the denominator from a rational number.&quot;&quot;&quot;
+    return rat[1]
+</code></pre>
+
+            </div>
+        
+
+<div class="page-break"></div>
+
+
+<h3 id="q2-divide">Q2: Divide</h3>
+
+
+<p>Next, we'll be implementing two additional functions to handle operations
+between rational numbers.</p>
+
+<p>First, implement <code>div_rat(x,y)</code>, which returns the result of dividing rational number <code>x</code> by
+rational number <code>y</code>.</p>
+
+
+            
+            <b>Your Answer</b>
+            
+            <div class="monaco-storable" id="div-rat-input" style="height:234px;"></div>
+            <a href="javascript:void" id="modal-link-div-rat-input">Run in 61A Code</a>
+            <div class="modal fade" id="modal-div-rat-input" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content" style="padding-bottom: -5px">
+                    <iframe
+                        id="code-iframe-div-rat-input"
+                        width="100%"
+                        height="700px"
+                        style="border: none; display:block;"
+                    ></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="storable-status"></div>
+            <script>
+                $(() => activateEditor('def div_rat(x, y):\n    &quot;&quot;&quot;The quotient of rationals x/y.\n    &gt;&gt;&gt; a, b = make_rat(3, 4), make_rat(5, 3)\n    &gt;&gt;&gt; c = div_rat(a, b)\n    &gt;&gt;&gt; numer(c)\n    9\n    &gt;&gt;&gt; denom(c)\n    20\n    &quot;&quot;&quot;\n    "*** YOUR CODE HERE ***"\n\n', "python", "div-rat-input"));
+            </script>
+        
+            <div class="sol-highlight">
+                <b>Solution</b>
+                
+<pre><code>def div_rat(x, y):
+    &quot;&quot;&quot;The quotient of rationals x/y.
+    &gt;&gt;&gt; a, b = make_rat(3, 4), make_rat(5, 3)
+    &gt;&gt;&gt; c = div_rat(a, b)
+    &gt;&gt;&gt; numer(c)
+    9
+    &gt;&gt;&gt; denom(c)
+    20
+    &quot;&quot;&quot;
+    return make_rat(numer(x) * denom(y), numer(y) * denom(x))
+</code></pre>
+
+            </div>
+        
+
+
+<h3 id="q3-less-than">Q3: Less Than</h3>
+
+
+<p>Finally, implement <code>lt_rat(x, y)</code>, which returns <code>True</code> if and only if rational number <code>x</code> is
+less than rational number <code>y</code>.</p>
+
+
+            
+            <b>Your Answer</b>
+            
+            <div class="monaco-storable" id="lt-rat-input" style="height:378px;"></div>
+            <a href="javascript:void" id="modal-link-lt-rat-input">Run in 61A Code</a>
+            <div class="modal fade" id="modal-lt-rat-input" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content" style="padding-bottom: -5px">
+                    <iframe
+                        id="code-iframe-lt-rat-input"
+                        width="100%"
+                        height="700px"
+                        style="border: none; display:block;"
+                    ></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="storable-status"></div>
+            <script>
+                $(() => activateEditor('def lt_rat(x, y):\n    &quot;&quot;&quot;Returns True iff x &lt; y as rational numbers; else False.\n    &gt;&gt;&gt; a, b = make_rat(6, 7), make_rat(12, 16)\n    &gt;&gt;&gt; lt_rat(a, b)\n    False\n    &gt;&gt;&gt; lt_rat(b, a)\n    True\n    &gt;&gt;&gt; lt_rat(a, b)\n    False\n    &gt;&gt;&gt; a, b = make_rat(&#x2d;6, 7), make_rat(&#x2d;12, 16)\n    &gt;&gt;&gt; lt_rat(a, b)\n    True\n    &gt;&gt;&gt; lt_rat(b, a)\n    False\n    &gt;&gt;&gt; lt_rat(a, a)\n    False\n    &quot;&quot;&quot;\n    "*** YOUR CODE HERE ***"\n\n', "python", "lt-rat-input"));
+            </script>
+        
+            <div class="sol-highlight">
+                <b>Solution</b>
+                
+<pre><code>def lt_rat(x, y):
+    &quot;&quot;&quot;Returns True iff x &lt; y as rational numbers; else False.
+    &gt;&gt;&gt; a, b = make_rat(6, 7), make_rat(12, 16)
+    &gt;&gt;&gt; lt_rat(a, b)
+    False
+    &gt;&gt;&gt; lt_rat(b, a)
+    True
+    &gt;&gt;&gt; lt_rat(a, b)
+    False
+    &gt;&gt;&gt; a, b = make_rat(&#x2d;6, 7), make_rat(&#x2d;12, 16)
+    &gt;&gt;&gt; lt_rat(a, b)
+    True
+    &gt;&gt;&gt; lt_rat(b, a)
+    False
+    &gt;&gt;&gt; lt_rat(a, a)
+    False
+    &quot;&quot;&quot;
+    return numer(x) * denom(y) &lt; numer(y) * denom(x)
+</code></pre>
+
+            </div>
+        
+
+<div class="page-break"></div>
+
+
+<h1 id="trees">Trees</h1>
+
+
+<p>In computer science, <strong>trees</strong> are recursive data structures that are
+widely used in various settings and can be implemented in many ways.</p>
+
+<p>In this class, we consider a <code>tree</code> an <em>abstract data type</em> (ADT). This
+will act as our own custom type, much like an integer or string!</p>
+
+<p>A tree has a root <strong>label</strong> and a sequence of <strong>branches</strong>, each of
+which is also a tree.  A <strong>leaf</strong> is a tree with no branches.</p>
+
+<ul>
+  <li>The arguments to the constructor <code>tree</code> are the label for the root node and an optional list of branches.</li>
+  <li>If no branches parameter is provided, the default value <code>[]</code> is used.</li>
+  <li>The selectors for these are <code>label</code> and <code>branches</code>.</li>
+</ul>
+
+<p>Remember <code>branches</code> returns a list of trees and not a tree directly.
+It's important to distinguish between working with a tree and working with a <strong>sequence of</strong> trees.</p>
+
+<p>We have also provided a convenience predicate function, <code>is_leaf</code>, which returns whether a tree is a leaf.</p>
+
+<p>Let's try to create the tree <code>t</code> from above:</p>
+
+<pre><code class="python">t2 = tree(3,
+        [tree(4),
+         tree(5),
+         tree(6)])
+
+t1 = tree(1,
+        [t2,
+         tree(2)])</code></pre>
+
+
+
+<p>The following is an illustration of tree <code>t1</code>.</p>
+
+<p><img class="img-responsive center-block" src="assets/example_tree_annotated.PNG" alt="Example Tree" width="65%" height=""></p>
+
+<p>We note that there are many trees in this data structure.  For example,
+<code>t1</code> contains the tree <code>t2</code>. So we may refer to a tree as a <strong>node</strong>
+of a larger structure. Thus, <code>t1</code> and <code>t2</code> are nodes (locations) in
+the tree <code>t1</code>, and <code>t1</code> is the <strong>root node</strong> of this tree.</p>
+
+<p>In the tree <code>t1</code>, <code>t2</code> is a <strong>child</strong> of <code>t1</code>, and <code>t1</code> is the
+<strong>parent</strong> of <code>t2</code> since <code>t2</code> is a branch of <code>t1</code>.</p>
+
+<p>A <strong>path</strong> in a tree is a sequence of nodes where tree <code>i+1</code> is the
+<strong>child</strong> of tree <code>i</code>. We say the path is from the first node in the
+sequence to the last node.  The <strong>height</strong> of a tree is this the
+maximum length <strong>path</strong> to a <strong>leaf</strong> in the tree, where a <strong>leaf</strong> is
+a tree with no branches.</p>
+
+<p>The <strong>depth</strong> of a node <code>n</code> in a tree <code>t</code> is the length of the
+path from the root node of <code>t</code> to <code>n</code>.  For example, in the tree <code>t1</code>,
+the depth of node labeled <code>4</code> is 2.</p>
+
+<br>
+
+
+<h2 id="tree-adt-implementation">Tree ADT Implementation</h2>
+
+
+<p>For your reference, we have provided our implementation of trees as a data abstraction.
+However, as with any data abstraction, we should only concern ourselves with what our functions
+do rather than their specific implementation!</p>
+
+<pre><code class="python">def tree(label, branches=[]):
+    &quot;&quot;&quot;Construct a tree with the given label value and a list of branches.&quot;&quot;&quot;
+    return [label] + list(branches)
+
+def label(tree):
+    &quot;&quot;&quot;Return the label value of a tree.&quot;&quot;&quot;
+    return tree[0]
+
+def branches(tree):
+    &quot;&quot;&quot;Return the list of branches of the given tree.&quot;&quot;&quot;
+    return tree[1:]
+
+def is_leaf(tree):
+    &quot;&quot;&quot;Returns True if the tree&#x27;s list of branches is empty, and False otherwise.&quot;&quot;&quot;
+    return not branches(tree)</code></pre>
+
+
+
+
+<h3 id="q4-tree-abstraction-barrier">Q4: Tree Abstraction Barrier</h3>
+
+
+<p>Consider a tree <code>t</code> constructed by calling
+<code>tree(1, [tree(2), tree(4)])</code>. For each of the following expressions,
+answer these two questions:</p>
+
+<ul>
+  <li>What does the expression evaluate to?</li>
+  <li>Does the expression violate any abstraction barriers? If so, write
+  an equivalent expression that does not violate abstraction barriers.</li>
+</ul>
+
+<ol>
+  <li><p><code>label(t)</code>
+  
+            <label class="sr-only" for="tree-abstraction-1-input">Your Answer:</label>
+            <input class="form-control storable" id="tree-abstraction-1-input" type="text">
+            <div class="storable-status"></div>
+        
+  <div class="sol-highlight"></p>
+
+  <p>Evaluates to 1, the label of the entire tree. This is simply using a
+  selector to get the label, which is not violating any abstraction
+  barriers.</p>
+
+  </div></li>
+  <li><p><code>t[0]</code>
+  
+            <label class="sr-only" for="tree-abstraction-2-input">Your Answer:</label>
+            <input class="form-control storable" id="tree-abstraction-2-input" type="text">
+            <div class="storable-status"></div>
+        
+  <div class="sol-highlight"></p>
+
+  <p>This expression evaluates to 1, the label of the entire tree.
+  However, it makes use of the fact that trees are implemented using
+  lists, and violates the abstraction barrier. An equivalent
+  expression is <code>label(t)</code>.</p>
+
+  </div></li>
+  <li><p><code>label(branches(t)[0])</code>
+  
+            <label class="sr-only" for="tree-abstraction-3-input">Your Answer:</label>
+            <input class="form-control storable" id="tree-abstraction-3-input" type="text">
+            <div class="storable-status"></div>
+        </p>
+
+  <div class="sol-highlight">
+
+  <p>This expression evaluates to the label of the first branch of <code>t</code>.
+  It is not a violation to index into <code>branches(t)</code> because it is
+  given in the description of the ADT that <code>branches(t)</code> returns a
+  list of branches.</p>
+
+  </div></li>
+  <li><p><code>is_leaf(t[1:][1])</code>
+  
+            <label class="sr-only" for="tree-abstraction-4-input">Your Answer:</label>
+            <input class="form-control storable" id="tree-abstraction-4-input" type="text">
+            <div class="storable-status"></div>
+        </p>
+
+  <div class="sol-highlight">
+
+  <p>This expression accesses the branches of <code>t</code> by slicing <code>t</code>.
+  Although this works because this is technically what <code>branches(t)</code>
+  returns, this is an abstraction violation because we cannot assume
+  the implementation of <code>branches(t)</code>.</p>
+
+  <p>It then accesses the second branch by indexing into the list of
+  branches, which is <em>not</em> an abstraction violation because we are
+  allowed to assume that branches is a list. This expression evaluates
+  to <code>True</code> because the second branch of <code>t</code> is a leaf. An equivalent
+  expression is <code>is_leaf(branches(t)[1])</code>.</p>
+
+  </div></li>
+  <li><p><code>[label(b) for b in branches(t)]</code>
+  
+            <label class="sr-only" for="tree-abstraction-5-input">Your Answer:</label>
+            <input class="form-control storable" id="tree-abstraction-5-input" type="text">
+            <div class="storable-status"></div>
+        </p>
+
+  <div class="sol-highlight">
+
+  <p>This expression uses the <code>branches</code> selector to access the branches
+  of <code>t</code> and then iterates through it to construct a new list
+  containing the labels of the branches. The result list is <code>[2, 4]</code>.
+  It does not violate any abstraction barriers.</p>
+
+  </div></li>
+  <li><p><strong>Challenge:</strong> <code>branches(tree(5, [t, tree(3)]))[0][0]</code>
+  
+            <label class="sr-only" for="tree-abstraction-6-input">Your Answer:</label>
+            <input class="form-control storable" id="tree-abstraction-6-input" type="text">
+            <div class="storable-status"></div>
+        </p>
+
+  <div class="sol-highlight">
+
+  <p>This expression evaluates to the label of the tree <code>t</code>, which is 1.
+  This is because the expression <code>tree(5, [t, tree(3)])</code> evaluates to
+  a tree whose first branch is the tree <code>t</code> that we constructed above!
+  Howvever, this expression violates the abstraction barrier by
+  indexing into <code>t</code> to get its label. An equivalent expression would
+  be <code>label(branches(tree(5, [t, tree(3)]))[0])</code>.</p>
+
+  </div></li>
+</ol>
+
+<div class="page-break"></div>
+
+
+<h3 id="q5-height">Q5: Height</h3>
+
+<p>Write a function that returns the height of a tree.
+Recall that the height of a tree is the number of non-root nodes in the longest path from the root to a leaf.</p>
+
+
+            
+            <b>Your Answer</b>
+            
+            <div class="monaco-storable" id="height-input" style="height:504px;"></div>
+            <a href="javascript:void" id="modal-link-height-input">Run in 61A Code</a>
+            <div class="modal fade" id="modal-height-input" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content" style="padding-bottom: -5px">
+                    <iframe
+                        id="code-iframe-height-input"
+                        width="100%"
+                        height="700px"
+                        style="border: none; display:block;"
+                    ></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="storable-status"></div>
+            <script>
+                $(() => activateEditor('def height(t):\n    &quot;&quot;&quot;Return the height of a tree.\n    &gt;&gt;&gt; t = tree(3, [tree(5, [tree(1)]), tree(2)])\n    &gt;&gt;&gt; height(t)\n    2\n    &gt;&gt;&gt; t = tree(3, [tree(1), tree(2, [tree(5, [tree(6)]), tree(1)])])\n    &gt;&gt;&gt; height(t)\n    3\n    &quot;&quot;&quot;\n    "*** YOUR CODE HERE ***"\n\n', "python", "height-input"));
+            </script>
+        
+            <div class="sol-highlight">
+                <b>Solution</b>
+                
+<pre><code>def height(t):
+    &quot;&quot;&quot;Return the height of a tree.
+    &gt;&gt;&gt; t = tree(3, [tree(5, [tree(1)]), tree(2)])
+    &gt;&gt;&gt; height(t)
+    2
+    &gt;&gt;&gt; t = tree(3, [tree(1), tree(2, [tree(5, [tree(6)]), tree(1)])])
+    &gt;&gt;&gt; height(t)
+    3
+    &quot;&quot;&quot;
+    # Non&#x2d;list comprehension solution
+    if is_leaf(t):
+        return 0
+    best_height = 0
+    for b in branches(t):
+        best_height = max(height(b), best_height)
+    return best_height + 1
+
+    # List comprehension solution
+    if is_leaf(t):
+        return 0
+    return 1 + max([height(branch) for branch in branches(t)])
+
+    # Alternate solutions
+    return 1 + max([&#x2d;1] + [height(branch) for branch in branches(t)])
+    return max([1 + height(b) for b in branches(t)], default=0)
+</code></pre>
+
+            </div>
+        
+
+
+<div class="sol-highlight">
+<a href="https://www.youtube.com/watch?v=Am6m8YgAnYY&list=PLx38hZJ5RLZdJgRCgpaTbmRXKAHOUmomO&index=4">See video walkthrough</a>
+
+</div>
+
+<div class="page-break"></div>
+
+
+<h3 id="q6-find-path">Q6: Find Path</h3>
+
+
+<p>Write a function <code>find_path</code> that takes in a tree <code>t</code> with unique labels and a
+value <code>x</code>. It returns a list containing the labels of the nodes along the path
+from the root of <code>t</code> to the node labeled <code>x</code>.</p>
+
+<p>If <code>x</code> is not a label in <code>t</code>, return <code>None</code>. Assume that the labels of <code>t</code> are unique.</p>
+
+<p>For the following tree, <code>find_path(t, 5)</code> should return <code>[2, 7, 6, 5]</code>.</p>
+
+<p><img class="img-responsive center-block" src="assets/find_path.png" alt="Example Tree" width="" height=""></p>
+
+
+            
+            <b>Your Answer</b>
+            
+            <div class="monaco-storable" id="find_path-input" style="height:288px;"></div>
+            <a href="javascript:void" id="modal-link-find_path-input">Run in 61A Code</a>
+            <div class="modal fade" id="modal-find_path-input" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content" style="padding-bottom: -5px">
+                    <iframe
+                        id="code-iframe-find_path-input"
+                        width="100%"
+                        height="700px"
+                        style="border: none; display:block;"
+                    ></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="storable-status"></div>
+            <script>
+                $(() => activateEditor('def find_path(t, x):\n    &quot;&quot;&quot;\n    &gt;&gt;&gt; t = tree(2, [tree(7, [tree(3), tree(6, [tree(5), tree(11)])] ), tree(15)])\n    &gt;&gt;&gt; find_path(t, 5)\n    [2, 7, 6, 5]\n    &gt;&gt;&gt; find_path(t, 10)  # returns None\n    &quot;&quot;&quot;\n    if _____________________________:\n        return _____________________________\n    _____________________________:\n        path = ______________________\n        if _____________________________:\n            return _____________________________\n\n', "python", "find_path-input"));
+            </script>
+        
+            <div class="sol-highlight">
+                <b>Solution</b>
+                
+<pre><code>def find_path(t, x):
+    &quot;&quot;&quot;
+    &gt;&gt;&gt; t = tree(2, [tree(7, [tree(3), tree(6, [tree(5), tree(11)])] ), tree(15)])
+    &gt;&gt;&gt; find_path(t, 5)
+    [2, 7, 6, 5]
+    &gt;&gt;&gt; find_path(t, 10)  # returns None
+    &quot;&quot;&quot;
+    if label(t) == x:
+        return [label(t)]
+    for b in branches(t):
+        path = find_path(b, x)
+        if path:
+            return [label(t)] + path
+</code></pre>
+
+            </div>
+        
+
+<div class="sol-highlight">
+<a href="https://www.youtube.com/watch?v=OnLa_VUrWiA&list=PLx38hZJ5RLZcgrSJp16YmzNwn9hL5JD8q&index=3&t=0m11s">See video walkthrough</a>
+</div>
+
+
+
+<div class="page-break"></div>
+
+
+<h3 id="q7-sprout-leaves">Q7: Sprout Leaves</h3>
+
+
+<p>Define a function <code>sprout_leaves</code> that takes in a tree, <code>t</code>, and a list of
+leaf labels, <code>leaves</code>. It produces a new tree that is identical to <code>t</code>, but where each
+old leaf node has new branches, for each label in <code>leaves</code>.</p>
+
+<p>For example, suppose we have the tree <code>t = tree(1, [tree(2), tree(3, [tree(4)])])</code>. Calling
+<code>sprout_leaves(t, [5, 6])</code> produces the following tree:</p>
+
+<p><img class="img-responsive center-block" src="assets/sprout_leaves.png" alt="Example Tree" width="80%" height=""></p>
+
+<div class="page-break"></div>
+
+            
+            <b>Your Answer</b>
+            
+            <div class="monaco-storable" id="sprout-input" style="height:684px;"></div>
+            <a href="javascript:void" id="modal-link-sprout-input">Run in 61A Code</a>
+            <div class="modal fade" id="modal-sprout-input" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content" style="padding-bottom: -5px">
+                    <iframe
+                        id="code-iframe-sprout-input"
+                        width="100%"
+                        height="700px"
+                        style="border: none; display:block;"
+                    ></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="storable-status"></div>
+            <script>
+                $(() => activateEditor('def sprout_leaves(t, leaves):\n    &quot;&quot;&quot;Sprout new leaves containing the data in leaves at each leaf in\n    the original tree t and return the resulting tree.\n    &gt;&gt;&gt; t1 = tree(1, [tree(2), tree(3)])\n    &gt;&gt;&gt; print_tree(t1)\n    1\n      2\n      3\n    &gt;&gt;&gt; new1 = sprout_leaves(t1, [4, 5])\n    &gt;&gt;&gt; print_tree(new1)\n    1\n      2\n        4\n        5\n      3\n        4\n        5\n\n    &gt;&gt;&gt; t2 = tree(1, [tree(2, [tree(3)])])\n    &gt;&gt;&gt; print_tree(t2)\n    1\n      2\n        3\n    &gt;&gt;&gt; new2 = sprout_leaves(t2, [6, 1, 2])\n    &gt;&gt;&gt; print_tree(new2)\n    1\n      2\n        3\n          6\n          1\n          2\n    &quot;&quot;&quot;\n    "*** YOUR CODE HERE ***"\n\n', "python", "sprout-input"));
+            </script>
+        
+            <div class="sol-highlight">
+                <b>Solution</b>
+                
+<pre><code>def sprout_leaves(t, leaves):
+    &quot;&quot;&quot;Sprout new leaves containing the data in leaves at each leaf in
+    the original tree t and return the resulting tree.
+    &gt;&gt;&gt; t1 = tree(1, [tree(2), tree(3)])
+    &gt;&gt;&gt; print_tree(t1)
+    1
+      2
+      3
+    &gt;&gt;&gt; new1 = sprout_leaves(t1, [4, 5])
+    &gt;&gt;&gt; print_tree(new1)
+    1
+      2
+        4
+        5
+      3
+        4
+        5
+
+    &gt;&gt;&gt; t2 = tree(1, [tree(2, [tree(3)])])
+    &gt;&gt;&gt; print_tree(t2)
+    1
+      2
+        3
+    &gt;&gt;&gt; new2 = sprout_leaves(t2, [6, 1, 2])
+    &gt;&gt;&gt; print_tree(new2)
+    1
+      2
+        3
+          6
+          1
+          2
+    &quot;&quot;&quot;
+    if is_leaf(t):
+        return tree(label(t), [tree(leaf) for leaf in leaves])
+    return tree(label(t), [sprout_leaves(s, leaves) for s in branches(t)])
+</code></pre>
+
+            </div>
+        
+
+<div class="page-break"></div>
+
+
+<h1 id="additional-practice">Additional Practice</h1>
+
+
+
+<h3 id="q8-perfectly-balanced">Q8: Perfectly Balanced</h3>
+
+
+<p><strong>Part A:</strong>
+Implement <code>sum_tree</code>, which returns the sum of all the labels in tree <code>t</code>.</p>
+
+<p><strong>Part B:</strong>
+Implement <code>balanced</code>, which returns whether every branch of <code>t</code> has the
+same total sum and that the branches themselves are also balanced.</p>
+
+<p><img class="img-responsive center-block" src="assets/just-balanced.JPG" alt="Example Tree" width="60%" height=""></p>
+
+<ul>
+  <li>For example, the tree above is balanced because each branch has the same total sum, and each branch is also itself balanced.</li>
+</ul>
+
+<blockquote><p><strong>Hint:</strong> If we ever need to select a specific branch, we will need to break
+index into our branches list!</p>
+
+<p><strong>Challenge:</strong>
+Solve both of these parts with just 1 line of code each.</p></blockquote>
+
+
+            
+            <b>Your Answer</b>
+            
+            <div class="monaco-storable" id="sum_tree-input" style="height:252px;"></div>
+            <a href="javascript:void" id="modal-link-sum_tree-input">Run in 61A Code</a>
+            <div class="modal fade" id="modal-sum_tree-input" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content" style="padding-bottom: -5px">
+                    <iframe
+                        id="code-iframe-sum_tree-input"
+                        width="100%"
+                        height="700px"
+                        style="border: none; display:block;"
+                    ></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="storable-status"></div>
+            <script>
+                $(() => activateEditor('def sum_tree(t):\n    &quot;&quot;&quot;\n    Add all elements in a tree.\n    &gt;&gt;&gt; t = tree(4, [tree(2, [tree(3)]), tree(6)])\n    &gt;&gt;&gt; sum_tree(t)\n    15\n    &quot;&quot;&quot;\n    "*** YOUR CODE HERE ***"\n\n', "python", "sum_tree-input"));
+            </script>
+        
+            <div class="sol-highlight">
+                <b>Solution</b>
+                
+<pre><code>def sum_tree(t):
+    &quot;&quot;&quot;
+    Add all elements in a tree.
+    &gt;&gt;&gt; t = tree(4, [tree(2, [tree(3)]), tree(6)])
+    &gt;&gt;&gt; sum_tree(t)
+    15
+    &quot;&quot;&quot;
+    total = 0
+    for b in branches(t):
+        total += sum_tree(b)
+    return label(t) + total
+</code></pre>
+
+            </div>
+        
+
+            
+            <b>Your Answer</b>
+            
+            <div class="monaco-storable" id="balanced-input" style="height:378px;"></div>
+            <a href="javascript:void" id="modal-link-balanced-input">Run in 61A Code</a>
+            <div class="modal fade" id="modal-balanced-input" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content" style="padding-bottom: -5px">
+                    <iframe
+                        id="code-iframe-balanced-input"
+                        width="100%"
+                        height="700px"
+                        style="border: none; display:block;"
+                    ></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="storable-status"></div>
+            <script>
+                $(() => activateEditor('def balanced(t):\n    &quot;&quot;&quot;\n    Checks if each branch has same sum of all elements and\n    if each branch is balanced.\n    &gt;&gt;&gt; t = tree(1, [tree(3), tree(1, [tree(2)]), tree(1, [tree(1), tree(1)])])\n    &gt;&gt;&gt; balanced(t)\n    True\n    &gt;&gt;&gt; t = tree(1, [t, tree(1)])\n    &gt;&gt;&gt; balanced(t)\n    False\n    &gt;&gt;&gt; t = tree(1, [tree(4), tree(1, [tree(2), tree(1)]), tree(1, [tree(3)])])\n    &gt;&gt;&gt; balanced(t)\n    False\n    &quot;&quot;&quot;\n    "*** YOUR CODE HERE ***"\n\n', "python", "balanced-input"));
+            </script>
+        
+            <div class="sol-highlight">
+                <b>Solution</b>
+                
+<pre><code>def balanced(t):
+    &quot;&quot;&quot;
+    Checks if each branch has same sum of all elements and
+    if each branch is balanced.
+    &gt;&gt;&gt; t = tree(1, [tree(3), tree(1, [tree(2)]), tree(1, [tree(1), tree(1)])])
+    &gt;&gt;&gt; balanced(t)
+    True
+    &gt;&gt;&gt; t = tree(1, [t, tree(1)])
+    &gt;&gt;&gt; balanced(t)
+    False
+    &gt;&gt;&gt; t = tree(1, [tree(4), tree(1, [tree(2), tree(1)]), tree(1, [tree(3)])])
+    &gt;&gt;&gt; balanced(t)
+    False
+    &quot;&quot;&quot;
+    for b in branches(t):
+        if sum_tree(branches(t)[0]) != sum_tree(b) or not balanced(b):
+            return False
+    return True
+</code></pre>
+
+            </div>
+        
+<script>
+    $('.alwaystoggle').css('display', 'inline-block');
+    $('.alwaystoggle').click(function() {
+      var solution_id = $(this).attr('id');
+      $('div.' + solution_id).slideToggle(600);
+    });
+</script>
+
+  </div>
+
+  <div class='col-md-3 sticky'>
+    <nav class='hidden-print hidden-sm hidden-xs sidebar'>
+      <ul>
+  <li><a href="#data-abstraction">Data Abstraction</a></li>
+  <ul>
+    <li><a href="#rationals">Rationals</a></li>
+    <ul>
+      <li><a href="#q1-extending-rationals">Q1: Extending Rationals</a></li>
+      <li><a href="#q2-divide">Q2: Divide</a></li>
+      <li><a href="#q3-less-than">Q3: Less Than</a></li>
+    </ul>
+  </ul>
+  <li><a href="#trees">Trees</a></li>
+  <ul>
+    <li><a href="#tree-adt-implementation">Tree ADT Implementation</a></li>
+    <ul>
+      <li><a href="#q4-tree-abstraction-barrier">Q4: Tree Abstraction Barrier</a></li>
+      <li><a href="#q5-height">Q5: Height</a></li>
+      <li><a href="#q6-find-path">Q6: Find Path</a></li>
+      <li><a href="#q7-sprout-leaves">Q7: Sprout Leaves</a></li>
+    </ul>
+  </ul>
+  <li><a href="#additional-practice">Additional Practice</a></li>
+  <ul>
+    <li><a href="#q8-perfectly-balanced">Q8: Perfectly Balanced</a></li>
+  </ul>
+</ul>
+    </nav>
+  </div>
+</div>
+
+    </main>
+
+    <footer class="container">
+      <div class="row text-center">
+        <div class="col col-sm-4">
+          <h3><a href="/">CS 61A</a></h3>
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/weekly">Weekly Schedule</a></li>
+            <li><a href="/office-hours">Office Hours</a></li>
+            <li><a href="/staff">Staff</a></li>
+          </ul>
+        </div>
+        <div class="col col-sm-4">
+          <h3><a href="/resources">Resources</a></h3>
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/articles/studying">Studying Guide</a></li>
+            <li><a href="/articles/debugging">Debugging Guide</a></li>
+            <li><a href="/articles/composition">Composition Guide</a></li>
+            <li><a href="/articles/pair-programming">Pair Programming</a></li>
+          </ul>
+        </div>
+        <div class="col col-sm-4">
+          <h3><a href="/articles/about">Policies</a></h3>
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/articles/about#assignments">Assignments</a></li>
+            <li><a href="/articles/about#exams">Exams</a></li>
+            <li><a href="/articles/about#grading">Grading</a></li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/loader.min.js"></script>
+  <link rel="stylesheet" data-name="vs/editor/editor.main" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/editor/editor.main.min.css">
+  <script>
+      require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs' }});
+      window.MonacoEnvironment = { getWorkerUrl: () => URL.createObjectURL(new Blob([`
+      self.MonacoEnvironment = {
+          baseUrl: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min'
+      };
+      importScripts('https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/base/worker/workerMain.min.js');
+  `], { type: 'text/javascript' }))
+  };
+  </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.15.5/js/jsplumb.min.js"></script>
+    <script src="/assets/js/network_storage.js"></script>
+    <script src="/assets/js/storable.js"></script>
+    <script src="/assets/js/editor.js"></script>
+    <script src="/assets/js/copy-button.js"></script>
+    <script src="/assets/js/env-diagram.js"></script>
+    
+<script src="/assets/js/sketchy.js"></script>
+<script>
+  $('.sidebar ul').addClass('nav nav-stacked noselect');
+  $('body').scrollspy({
+    target: '.sidebar',
+    offset: 40
+  });
+
+  function goToId(id) {
+    var target = $(id);
+    target.parent().show();
+    $('html,body').animate({
+      scrollTop: target.offset().top,
+    }, 100);
+    $("body").scrollspy('refresh');
+  }
+
+  if (location.hash) {
+    setTimeout(function() {
+      if (location.hash) {
+        goToId(location.hash);
+      }
+    }, 1);
+  }
+
+  $("a").click(function(event) {
+    var urlBeforeHashRegEx = new RegExp("^"+window.location.href.split("#")[0]);
+    if (/^#/.test(this.hash) && urlBeforeHashRegEx.test(this.href)) {
+      event.preventDefault();
+      goToId(this.hash);
+      document.location.hash = this.hash;
+    }
+  });
+</script>
+
+  </body>
+</html>

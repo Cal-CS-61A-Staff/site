@@ -1,0 +1,889 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="description" content ="CS 61A: Structure and Interpretation of Computer Programs" />
+    <meta name="keywords" content ="CS 61A, Computer Science, CS, 61A, Programming, John DeNero, Berkeley, EECS" />
+    <meta name="author" content ="Satish Rao" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-throttle-debounce/1.1/jquery.ba-throttle-debounce.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/assets/js/hl.js"></script>
+    <script src="/assets/js/toggledarkmode.js"></script>
+    <script>
+        // we aren't registering builtins since
+        //      (1) they don't render differently in the current CSS from other names
+        //      (2) it's a mess to list all of them. You can extract from the site but that takes effort
+        // if (1) ceases to be true, (2) might be worth the effort. For now, we're leaving as is
+        hljsRegister({
+            'keyword': "define if cond and or let begin lambda mu quote delay cons-stream set! quasiquote unquote unquote-splicing define-macro"
+        });
+        hljs.initHighlightingOnLoad();
+    </script>
+    <script src="/assets/js/dark-mode.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata|Roboto:300,400,500|Work+Sans:400,700">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/mono-blue.css">
+    <link rel="icon" href="/assets/images/favicon.ico">
+
+    
+
+<link rel="stylesheet" type="text/css" href="/assets/css/disc.css">
+
+
+    <title>
+Discussion 4 | CS 61A Fall 2023
+</title>
+  </head>
+
+  <body id="index" class="home">
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container noselect">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-section">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">
+            <img style="max-width:60px; margin-top: -20px;" class="logo" src="/assets/images/logo.png"/>
+          </a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="navbar-collapse-section">
+          <ul class="nav navbar-nav navbar-right">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Calendar
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a href="/weekly">Weekly Schedule</a></li>
+                <li><a href="/office-hours">Office Hours</a></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Links
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a href="https://sections.cs61a.org">Sections Tool</a></li>
+                <li><a href="https://oh.cs61a.org">Office Hours Queue</a></li>
+                <li><a href="https://go.cs61a.org/regrades">Request a Regrade</a></li>
+                <li><a href="https://go.cs61a.org/zoom-lecture">Rao Zoom Lecture</a></li>
+                <li><a href="https://berkeley.zoom.us/j/98407898918">DeNero Zoom Lecture</a></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Staff
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a href="/instructor">Instructors</a></li>
+                <li><a href="/TAs">Rao TAs</a></li>
+                <li><a href="/TAs2">DeNero TAs</a></li>
+                <li><a href="/tutors">Rao Tutors</a></li>
+                <li><a href="/tutors2">DeNero Tutors</a></li>
+                <li><a href="/academic-interns">Rao Academic Interns</a></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Resources
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a href="https://go.cs61a.org/extensions">Request an Extension</a></li>
+                <li><a href="https://go.cs61a.org/regrades">Request a Regrade</a></li>
+                <li><a href="/articles/accommodations">Book an Accommodations Appointment</a></li>
+                <li><a href="/resources/">Topical Resources + Past Exams</a></li>
+                <li><a href="https://tutor.cs61a.org/">PythonTutor</a></li>
+                <li><a href="https://code.cs61a.org/">Code</a></li>
+                <li><a href="https://edstem.org/us/courses/42930/discussion/" target="_blank">Ed</a></li>
+                <li><a href="/articles/campus-res/">Department/Campus Resources</a></li>
+              </ul>
+            </li>
+            <li><a href="/articles/about">Syllabus</a></li>
+            <li><a href="/denero.html">DeNero</a></li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Rao
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a href="/">Rao Site</a></li>
+                <li><a href="https://go.cs61a.org/zoom-lecture">Rao Zoom Lecture</a></li>
+              </ul>
+            </li>
+            <li><a href="/contact/">Contact</a></li>
+            <li>
+              <label class="switch">
+                <input type="checkbox" id="toggle-mode-cb">
+                <span class="slider round"></span>
+              </label>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <main id="content" class="container">
+      
+<div class='row'>
+  <div class='col-md-9'>
+    <header>
+      <h1>
+        
+Rao Discussion 4: Tree Recursion
+
+        
+        
+        <ul class="inline-block list-inline">
+          <li><a href="disc04.pdf" class="label label-outline">disc04.pdf</a></li>
+        </ul>
+        
+        
+      </h1>
+    </header>
+    
+
+<div class="alert storable-login-status"></div>
+
+<p>This discussion worksheet is for the Rao offering of CS 61A.
+Your work is not graded and you do not need to submit anything.</p>
+
+
+    
+</p>
+
+
+<h1 id="tree-recursion">Tree Recursion</h1>
+
+
+<p>A tree recursive function is a recursive function that makes more than one call to itself, resulting in a tree-like series of calls.</p>
+
+<p>For example, this is the <a href="https://en.wikipedia.org/wiki/Fibonacci_number">Virahanka-Fibonacci</a> sequence:
+<code>0, 1, 1, 2, 3, 5, 8, 13, ...</code>.</p>
+
+<p>Each term is the sum of the previous two terms. This tree-recursive function calculates the <code>n</code>th Virahanka-Fibonacci number.</p>
+
+<pre><code>def virfib(n):
+    if n == 0 or n == 1:
+        return n
+    return virfib(n &#x2d; 1) + virfib(n &#x2d; 2)</code></pre>
+
+<p>Calling <code>virfib(6)</code> results in a call structure that resembles
+an upside-down tree (where <code>f</code> is <code>virfib</code>):</p>
+
+<p><img class="img-responsive center-block" src="assets/f6-call-tree.png" alt="Virahanka-Fibonacci tree." title="Virahanka-Fibonacci Tree" width="" height=""></p>
+
+<p>Each recursive call <code>f(i)</code> makes a call to <code>f(i&#x2d;1)</code> and a call to <code>f(i&#x2d;2)</code>.
+Whenever we reach an <code>f(0)</code> or <code>f(1)</code> call, we can directly return <code>0</code> or <code>1</code>
+without making more recursive calls. These calls are our base cases.</p>
+
+<p>A base case returns an answer without depending on the results of other calls.
+Once we reach a base case, we can go back and answer the
+recursive calls that led to the base case.</p>
+
+<p>As we will see, tree recursion is often effective for problems with branching choices.
+In these problems, you make a recursive call for each branching choice.</p>
+
+<div class="page-break"></div>
+
+
+<h3 id="q1-count-stair-ways">Q1: Count Stair Ways</h3>
+
+
+<p>Imagine that you want to go up a flight of stairs that has <code>n</code> steps,
+where <code>n</code> is a positive integer.
+You can take either one or two steps each time you move. In how many ways can you go up the entire flight of stairs?</p>
+
+<p>You'll write a function <code>count_stair_ways</code> to answer this question.
+Before you write any code, consider:</p>
+
+<ul>
+  <li>How many ways are there to go up a flight of stairs with <code>n = 1</code> step? What about <code>n = 2</code> steps? Try writing or drawing out some other examples and see if you notice any patterns.</li>
+</ul>
+
+
+            <label class="sr-only" for="count-stair-ways-howmany-input">Your Answer:</label>
+            <input class="form-control storable" id="count-stair-ways-howmany-input" type="text">
+            <div class="storable-status"></div>
+        
+
+<div class="sol-highlight">
+
+<p><strong>Solution</strong>:
+When there is only one step, there is only one way to go up.
+When there are two steps, we can go up in two ways:
+take a single 2-step, or take two 1-steps.</p>
+
+</div>
+
+<ul>
+  <li>What is the base case for this question? What is the smallest input?</li>
+</ul>
+
+
+            <label class="sr-only" for="count-stair-ways-basecase-input">Your Answer:</label>
+            <input class="form-control storable" id="count-stair-ways-basecase-input" type="text">
+            <div class="storable-status"></div>
+        
+
+<div class="sol-highlight">
+
+<p><strong>Solution</strong>:
+We actually have two base cases! Our first base case is when there is one step left.
+<code>n = 1</code> is the smallest input because 1 is the smallest positive integer.</p>
+
+<p>Our second base case is when there are two steps left.
+The primary solution (found below) cannot solve <code>count_stair_ways(2)</code> recursively because <code>count_stair_ways(0)</code> is undefined.</p>
+
+<p>(<code>virfib</code> has two base cases for a similar reason: <code>virfib(1)</code> cannot be solved recursively because <code>virfib(&#x2d;1)</code> is undefined.)</p>
+
+<p><strong>Alternate solution</strong>:
+Our first base case is when there are no steps left.
+This means we reached the top of the stairs with our last action.</p>
+
+<p>Our second base case is when we have overstepped.
+This means our last action was invalid; in other words, we took two steps when only one step remained.</p>
+
+</div>
+
+
+
+<ul>
+  <li>What do <code>count_stair_ways(n &#x2d; 1)</code> and <code>count_stair_ways(n &#x2d; 2)</code> represent?</li>
+</ul>
+
+
+            <label class="sr-only" for="count-stair-ways-represent-input">Your Answer:</label>
+            <input class="form-control storable" id="count-stair-ways-represent-input" type="text">
+            <div class="storable-status"></div>
+        
+
+<div class="sol-highlight">
+
+<p><strong>Solution</strong>:
+<code>count_stair_ways(n &#x2d; 1)</code> is the number of ways to go up <code>n &#x2d; 1</code> stairs. Equivalently, <code>count_stair_ways(n &#x2d; 1)</code> is the number of ways to go up <code>n</code> stairs if our first action is taking one step.</p>
+
+<p><code>count_stair_ways(n &#x2d; 2)</code> is the number of ways to go up <code>n &#x2d; 2</code> stairs. Equivalently, <code>count_stair_ways(n &#x2d; 2)</code> is the number of ways to go up <code>n</code> stairs if our first action is taking two steps.</p>
+
+</div>
+
+<p>Now, fill in the code for <code>count_stair_ways</code>:</p>
+
+
+            
+            <b>Your Answer</b>
+            
+            <div class="monaco-storable" id="count_stair_ways-input" style="height:324px;"></div>
+            <a href="javascript:void" id="modal-link-count_stair_ways-input">Run in 61A Code</a>
+            <div class="modal fade" id="modal-count_stair_ways-input" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content" style="padding-bottom: -5px">
+                    <iframe
+                        id="code-iframe-count_stair_ways-input"
+                        width="100%"
+                        height="700px"
+                        style="border: none; display:block;"
+                    ></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="storable-status"></div>
+            <script>
+                $(() => activateEditor('def count_stair_ways(n):\n    &quot;&quot;&quot;Returns the number of ways to climb up a flight of\n    n stairs, moving either one step or two steps at a time.\n    &gt;&gt;&gt; count_stair_ways(1)\n    1\n    &gt;&gt;&gt; count_stair_ways(2)\n    2\n    &gt;&gt;&gt; count_stair_ways(4)\n    5\n    &quot;&quot;&quot;\n    "*** YOUR CODE HERE ***"\n\n', "python", "count_stair_ways-input"));
+            </script>
+        
+            <div class="sol-highlight">
+                <b>Solution</b>
+                
+<pre><code>def count_stair_ways(n):
+    &quot;&quot;&quot;Returns the number of ways to climb up a flight of
+    n stairs, moving either one step or two steps at a time.
+    &gt;&gt;&gt; count_stair_ways(1)
+    1
+    &gt;&gt;&gt; count_stair_ways(2)
+    2
+    &gt;&gt;&gt; count_stair_ways(4)
+    5
+    &quot;&quot;&quot;
+    if n == 1:
+        return 1
+    elif n == 2:
+        return 2
+    return count_stair_ways(n&#x2d;1) + count_stair_ways(n&#x2d;2)
+</code></pre>
+
+            </div>
+        
+
+<div class="sol-highlight">
+Here's an alternate solution that corresponds to the alternate base cases:
+
+<pre><code class="{python}">def count_stair_ways_alt(n):
+    &quot;&quot;&quot;Returns the number of ways to climb up a flight of
+    n stairs, moving either 1 step or 2 steps at a time.
+    &gt;&gt;&gt; count_stair_ways_alt(4)
+    5
+    &quot;&quot;&quot;
+    if n == 0:
+        return 1
+    elif n &lt; 0:
+        return 0
+    return count_stair_ways_alt(n&#x2d;1) + count_stair_ways_alt(n&#x2d;2)</code></pre>
+
+
+
+<p>You can use <a href="https://www.recursionvisualizer.com/?function_definition=def%20count_stair_ways(n)%3A%0A%20%20%20%20if%20n%20%3D%3D%201%3A%0A%20%20%20%20%20%20%20%20return%201%0A%20%20%20%20elif%20n%20%3D%3D%202%3A%0A%20%20%20%20%20%20%20%20return%202%0A%20%20%20%20return%20count_stair_ways(n-1)%20%2B%20count_stair_ways(n-2)&function_call=count_stair_ways(4)">Recursion Visualizer</a> to step through the call structure of <code>count_stair_ways(4)</code> for the primary solution.</p>
+
+<!--Check out these video walkthroughs explaining the approach:
+
+<ul>
+  <li><a href="https://youtu.be/VcZPTlE56G8?t=1h7m6s">Leap of faith</a></li>
+  <li><a href="https://www.youtube.com/watch?v=sgNGso3LhD8&index=6&list=PLx38hZJ5RLZd35oDi3TGz5p9DyyxU3WwA">Diagramming trees</a>
+  -->
+  </div></li>
+</ul>
+
+
+
+<div class="page-break"></div>
+
+
+<h3 id="q2-count-k">Q2: Count K</h3>
+
+
+<p>Consider a special version of the <code>count_stair_ways</code> problem where we can take up to <code>k</code> steps at a time. Write a function <code>count_k</code> that calculates the number of ways to go up an <code>n</code>-step staircase. Assume <code>n</code> and <code>k</code> are positive integers.</p>
+
+
+            
+            <b>Your Answer</b>
+            
+            <div class="monaco-storable" id="count-k:count-for-input" style="height:558px;"></div>
+            <a href="javascript:void" id="modal-link-count-k:count-for-input">Run in 61A Code</a>
+            <div class="modal fade" id="modal-count-k:count-for-input" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content" style="padding-bottom: -5px">
+                    <iframe
+                        id="code-iframe-count-k:count-for-input"
+                        width="100%"
+                        height="700px"
+                        style="border: none; display:block;"
+                    ></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="storable-status"></div>
+            <script>
+                $(() => activateEditor('def count_k(n, k):\n    &quot;&quot;&quot;Counts the number of paths up a flight of n stairs\n    when taking up to k steps at a time.\n    &gt;&gt;&gt; count_k(3, 3) # 3, 2 + 1, 1 + 2, 1 + 1 + 1\n    4\n    &gt;&gt;&gt; count_k(4, 4)\n    8\n    &gt;&gt;&gt; count_k(10, 3)\n    274\n    &gt;&gt;&gt; count_k(300, 1) # Only one step at a time\n    1\n    &quot;&quot;&quot;\n    "*** YOUR CODE HERE ***"\n\n', "python", "count-k:count-for-input"));
+            </script>
+        
+            <div class="sol-highlight">
+                <b>Solution</b>
+                
+<pre><code>def count_k(n, k):
+    &quot;&quot;&quot;Counts the number of paths up a flight of n stairs
+    when taking up to k steps at a time.
+    &gt;&gt;&gt; count_k(3, 3) # 3, 2 + 1, 1 + 2, 1 + 1 + 1
+    4
+    &gt;&gt;&gt; count_k(4, 4)
+    8
+    &gt;&gt;&gt; count_k(10, 3)
+    274
+    &gt;&gt;&gt; count_k(300, 1) # Only one step at a time
+    1
+    &quot;&quot;&quot;
+    if n == 0:
+        return 1
+    elif n &lt; 0:
+        return 0
+    else:
+        total = 0
+        for step in range(1, k + 1):
+            total += count_k(n &#x2d; step, k)
+        return total
+
+# ALTERNATE SOLUTION
+def count_k(n, k):
+    if n == 0:
+        return 1
+    elif n &lt; 0:
+        return 0
+    else:
+        total = 0
+        i = 1
+        while i &lt;= k:
+            total += count_k(n &#x2d; i, k)
+            i += 1
+        return total
+</code></pre>
+
+            </div>
+        
+
+<div class="sol-highlight">
+
+<p>We use a loop in our solution for <code>count_k</code>. The first iteration of the loop counts the ways to go up <code>n</code> steps if we start by taking one step, the second iteration counts the ways to go up <code>n</code> steps if we start by taking two steps, and so on. The very last iteration counts the ways to go up <code>n</code> steps if we start by taking <code>k</code> steps, which is the most we can take at once.</p>
+
+<p>We use the <code>total</code> variable to track the sum of the results of our recursive <code>count_k</code> calls. When the loop ends, <code>total</code> will store the number of ways to go up <code>n</code> stairs and will include every possible starting move.</p>
+
+<p>You can use <a href="https://www.recursionvisualizer.com/?function_definition=def%20count_k%28n%2C%20k%29%3A%0A%20%20%20%20if%20n%20%3D%3D%200%3A%0A%20%20%20%20%20%20%20%20return%201%0A%20%20%20%20elif%20n%20%3C%200%3A%0A%20%20%20%20%20%20%20%20return%200%0A%20%20%20%20else%3A%0A%20%20%20%20%20%20%20%20total%20%3D%200%0A%20%20%20%20%20%20%20%20for%20step%20in%20range%281%2C%20k%20%2B%201%29%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20total%20%2B%3D%20count_k%28n%20-%20step%2C%20k%29%0A%20%20%20%20%20%20%20%20return%20total&function_call=count_k%283%2C%203%29">recursion visualizer</a> to step
+through the call structure of <code>count_k(3, 3)</code>.</p>
+
+<!--
+<a href="https://www.youtube.com/watch?v=oGBcPguM9vo&list=PLx38hZJ5RLZd35oDi3TGz5p9DyyxU3WwA&index=5">Video walkthrough</a>.
+-->
+
+</div>
+
+
+
+<div class="page-break"></div>
+
+
+<h3 id="q3-insect-combinatorics">Q3: Insect Combinatorics</h3>
+
+
+<p>An insect is inside an <code>m</code> by <code>n</code> grid. The insect starts at the bottom-left corner <code>(1, 1)</code> and wants to end up at the top-right corner <code>(m, n)</code>. The insect can only move up or to the right. Write a function <code>paths</code> that takes the height and width of a grid and returns the number of paths the insect can take from the start to the end. (There is a <a href="https://en.wikipedia.org/wiki/Closed-form_expression">closed-form solution</a> to this problem, but try to answer it with recursion.)</p>
+
+<p><img class="img-responsive center-block" src="assets/grid.jpg" alt="Insect grids." width="" height=""></p>
+
+<p>In the <code>2</code> by <code>2</code> grid, the insect has two paths from the start to the end. In the <code>3</code> by <code>3</code> grid, the insect has six paths (only three are shown above).</p>
+
+<blockquote><p><strong>Hint:</strong> What happens if the insect hits the upper or rightmost edge of the grid?</p></blockquote>
+
+
+            
+            <b>Your Answer</b>
+            
+            <div class="monaco-storable" id="paths-input" style="height:576px;"></div>
+            <a href="javascript:void" id="modal-link-paths-input">Run in 61A Code</a>
+            <div class="modal fade" id="modal-paths-input" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content" style="padding-bottom: -5px">
+                    <iframe
+                        id="code-iframe-paths-input"
+                        width="100%"
+                        height="700px"
+                        style="border: none; display:block;"
+                    ></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="storable-status"></div>
+            <script>
+                $(() => activateEditor('def paths(m, n):\n    &quot;&quot;&quot;Return the number of paths from one corner of an\n    M by N grid to the opposite corner.\n\n    &gt;&gt;&gt; paths(2, 2)\n    2\n    &gt;&gt;&gt; paths(5, 7)\n    210\n    &gt;&gt;&gt; paths(117, 1)\n    1\n    &gt;&gt;&gt; paths(1, 157)\n    1\n    &quot;&quot;&quot;\n    "*** YOUR CODE HERE ***"\n\n', "python", "paths-input"));
+            </script>
+        
+            <div class="sol-highlight">
+                <b>Solution</b>
+                
+<pre><code>def paths(m, n):
+    &quot;&quot;&quot;Return the number of paths from one corner of an
+    M by N grid to the opposite corner.
+
+    &gt;&gt;&gt; paths(2, 2)
+    2
+    &gt;&gt;&gt; paths(5, 7)
+    210
+    &gt;&gt;&gt; paths(117, 1)
+    1
+    &gt;&gt;&gt; paths(1, 157)
+    1
+    &quot;&quot;&quot;
+    if m == 1 or n == 1:
+        return 1
+    return paths(m &#x2d; 1, n) + paths(m, n &#x2d; 1)
+    # Base case: Look at the two visual examples given. Since the insect
+    # can only move to the right or up, once it hits either the rightmost edge
+    # or the upper edge, it has a single remaining path &#x2d;&#x2d; the insect has
+    # no choice but to go straight up or straight right (respectively) at that point.
+    # There is no way for it to backtrack by going left or down.
+
+    # Alternative solution:
+    if m == 1 and n == 1:
+        return 1
+    if m &lt; 1 or n &lt; 1:
+        return 0
+    return paths(m &#x2d; 1, n) + paths(m, n &#x2d; 1)
+    # This solution is similar to the alternate solution for Count Stair Ways.
+    # If we reach the exact destination, we have found a unique path (first base case), but if
+    # we overshoot, we have not found a valid path (second base case).
+
+    # Notice, however, that this solution is not as short and simple as the first solution
+    # since it doesn&#x27;t make use of the insect&#x27;s restricted movements (only right or up)
+    # to cut the program short. We have to reach the exact destination for the second solution,
+    # while in the first we just have to reach the right or top boundary.
+</code></pre>
+
+            </div>
+        
+
+<div class="sol-highlight">
+
+<p>The recursive case is that there are paths from the square to the right through
+an (m, n-1) grid and paths from the square above through an (m-1, n) grid.</p>
+
+</div>
+
+
+
+<div class="page-break"></div>
+
+
+<h3 id="q4-max-product">Q4: Max Product</h3>
+
+
+<p>Write a function that takes in a list and returns the maximum product that can be formed using non-consecutive elements of the list. All numbers in the input list are greater than or equal to 1.</p>
+
+
+            
+            <b>Your Answer</b>
+            
+            <div class="monaco-storable" id="max-product-input" style="height:378px;"></div>
+            <a href="javascript:void" id="modal-link-max-product-input">Run in 61A Code</a>
+            <div class="modal fade" id="modal-max-product-input" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content" style="padding-bottom: -5px">
+                    <iframe
+                        id="code-iframe-max-product-input"
+                        width="100%"
+                        height="700px"
+                        style="border: none; display:block;"
+                    ></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="storable-status"></div>
+            <script>
+                $(() => activateEditor('def max_product(s):\n    &quot;&quot;&quot;Return the maximum product that can be formed using\n    non&#x2d;consecutive elements of s.\n    &gt;&gt;&gt; max_product([10,3,1,9,2]) # 10 * 9\n    90\n    &gt;&gt;&gt; max_product([5,10,5,10,5]) # 5 * 5 * 5\n    125\n    &gt;&gt;&gt; max_product([])\n    1\n    &quot;&quot;&quot;\n\n', "python", "max-product-input"));
+            </script>
+        
+            <div class="sol-highlight">
+                <b>Solution</b>
+                
+<pre><code>def max_product(s):
+    &quot;&quot;&quot;Return the maximum product that can be formed using
+    non&#x2d;consecutive elements of s.
+    &gt;&gt;&gt; max_product([10,3,1,9,2]) # 10 * 9
+    90
+    &gt;&gt;&gt; max_product([5,10,5,10,5]) # 5 * 5 * 5
+    125
+    &gt;&gt;&gt; max_product([])
+    1
+    &quot;&quot;&quot;
+    if s == []:
+        return 1
+    if len(s) == 1:
+        return s[0]
+    else:
+        return max(s[0] * max_product(s[2:]), max_product(s[1:]))
+        # OR
+        return max(s[0] * max_product(s[2:]), s[1] * max_product(s[3:]))
+</code></pre>
+
+            </div>
+        
+
+<div class="sol-highlight">
+
+<p>This solution begins with the idea that we either include <code>s[0]</code> in the product
+or not:</p>
+
+<ul>
+  <li>If we include <code>s[0]</code>, we cannot include <code>s[1]</code>.</li>
+  <li>If we don't include <code>s[0]</code>, we can include <code>s[1]</code>.</li>
+</ul>
+
+<p>The recursive case is that we choose the larger of:</p>
+
+<ul>
+  <li>multiplying <code>s[0]</code> by the <code>max_product</code> of <code>s[2:]</code> (skipping <code>s[1]</code>) OR</li>
+  <li>just the <code>max_product</code> of <code>s[1:]</code> (skipping <code>s[0]</code>)</li>
+</ul>
+
+<p>Here are some key ideas in translating this into code:</p>
+
+<ul>
+  <li>The built-in <code>max</code> function can find the larger of two numbers, which in this
+  case come from two recursive calls.</li>
+  <li>In every case, <code>max_product</code> is called on a list of numbers and its return
+  value is treated as a number.</li>
+</ul>
+
+<p>An expression for this recursive case is:</p>
+
+<p><code>max(s[0] * max_product(s[2:]), max_product(s[1:]))</code></p>
+
+<p>Since this expression never refers to <code>s[1]</code>, and <code>s[2:]</code> evaluates to the empty
+list even for a one-element list <code>s</code>, the second base case (<code>len(s) == 1</code>) can
+be omitted if this recursive case is used.</p>
+
+<p>The recursive solution above explores some options that we know in advance will
+not be the maximum, such as skipping both <code>s[0]</code> and <code>s[1]</code>. Alternatively, the
+recursive case could be that we choose the larger of:</p>
+
+<ul>
+  <li>multiplying <code>s[0]</code> by the <code>max_product</code> of <code>s[2:]</code> (skipping <code>s[1]</code>) OR</li>
+  <li>multiplying <code>s[1]</code> by the <code>max_product</code> of <code>s[3:]</code> (skipping <code>s[0]</code> and <code>s[2]</code>)</li>
+</ul>
+
+<p>An expression for this recursive case is:</p>
+
+<p><code>max(s[0] * max_product(s[2:]), s[1] * max_product(s[3:]))</code></p>
+
+</div>
+
+
+
+<div class="page-break"></div>
+
+
+<h3 id="q5-flatten">Q5: Flatten</h3>
+
+
+<p>Write a function <code>flatten</code> that takes a list and returns a "flattened" version of it. The input list may be a "deep list" (a list that contains other lists).</p>
+
+<p>In the following example, <code>[1, [[2], 3], 4, [5, 6]]</code> is a deep list because <code>[[2], 3]</code> and <code>[5, 6]</code> are lists. Note that <code>[[2], 3]</code> is itself a deep list.</p>
+
+<pre><code>&gt;&gt;&gt; lst = [1, [[2], 3], 4, [5, 6]]
+&gt;&gt;&gt; flatten(lst)
+[1, 2, 3, 4, 5, 6]</code></pre>
+
+<blockquote><p><strong>Hint</strong>: you can check if something in Python is a list with the built-in
+<code>type</code> function. For example:</p>
+
+<pre><code>&gt;&gt;&gt; type(3) == list
+False
+&gt;&gt;&gt; type([1, 2, 3]) == list
+True</code></pre></blockquote>
+
+
+            
+            <b>Your Answer</b>
+            
+            <div class="monaco-storable" id="flatten-input" style="height:504px;"></div>
+            <a href="javascript:void" id="modal-link-flatten-input">Run in 61A Code</a>
+            <div class="modal fade" id="modal-flatten-input" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content" style="padding-bottom: -5px">
+                    <iframe
+                        id="code-iframe-flatten-input"
+                        width="100%"
+                        height="700px"
+                        style="border: none; display:block;"
+                    ></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="storable-status"></div>
+            <script>
+                $(() => activateEditor('def flatten(s):\n    &quot;&quot;&quot;Returns a flattened version of list s.\n\n    &gt;&gt;&gt; flatten([1, 2, 3])\n    [1, 2, 3]\n    &gt;&gt;&gt; deep = [1, [[2], 3], 4, [5, 6]]\n    &gt;&gt;&gt; flatten(deep)\n    [1, 2, 3, 4, 5, 6]\n    &gt;&gt;&gt; deep                                # input list is unchanged\n    [1, [[2], 3], 4, [5, 6]]\n    &gt;&gt;&gt; very_deep = [[&#x27;m&#x27;, [&#x27;i&#x27;, [&#x27;n&#x27;, [&#x27;m&#x27;, &#x27;e&#x27;, [&#x27;w&#x27;, &#x27;t&#x27;, [&#x27;a&#x27;], &#x27;t&#x27;, &#x27;i&#x27;, &#x27;o&#x27;], &#x27;n&#x27;]], &#x27;s&#x27;]]]\n    &gt;&gt;&gt; flatten(very_deep)\n    [&#x27;m&#x27;, &#x27;i&#x27;, &#x27;n&#x27;, &#x27;m&#x27;, &#x27;e&#x27;, &#x27;w&#x27;, &#x27;t&#x27;, &#x27;a&#x27;, &#x27;t&#x27;, &#x27;i&#x27;, &#x27;o&#x27;, &#x27;n&#x27;, &#x27;s&#x27;]\n    &quot;&quot;&quot;\n    "*** YOUR CODE HERE ***"\n\n', "python", "flatten-input"));
+            </script>
+        
+            <div class="sol-highlight">
+                <b>Solution</b>
+                
+<pre><code>def flatten(s):
+    &quot;&quot;&quot;Returns a flattened version of list s.
+
+    &gt;&gt;&gt; flatten([1, 2, 3])
+    [1, 2, 3]
+    &gt;&gt;&gt; deep = [1, [[2], 3], 4, [5, 6]]
+    &gt;&gt;&gt; flatten(deep)
+    [1, 2, 3, 4, 5, 6]
+    &gt;&gt;&gt; deep                                # input list is unchanged
+    [1, [[2], 3], 4, [5, 6]]
+    &gt;&gt;&gt; very_deep = [[&#x27;m&#x27;, [&#x27;i&#x27;, [&#x27;n&#x27;, [&#x27;m&#x27;, &#x27;e&#x27;, [&#x27;w&#x27;, &#x27;t&#x27;, [&#x27;a&#x27;], &#x27;t&#x27;, &#x27;i&#x27;, &#x27;o&#x27;], &#x27;n&#x27;]], &#x27;s&#x27;]]]
+    &gt;&gt;&gt; flatten(very_deep)
+    [&#x27;m&#x27;, &#x27;i&#x27;, &#x27;n&#x27;, &#x27;m&#x27;, &#x27;e&#x27;, &#x27;w&#x27;, &#x27;t&#x27;, &#x27;a&#x27;, &#x27;t&#x27;, &#x27;i&#x27;, &#x27;o&#x27;, &#x27;n&#x27;, &#x27;s&#x27;]
+    &quot;&quot;&quot;
+    lst = []
+    for elem in s:
+        if type(elem) == list:
+            lst += flatten(elem)
+        else:
+            lst += [elem]
+    return lst
+
+# Alternate solution
+    if not s:
+        return []
+    elif type(s[0]) == list:
+        return flatten(s[0]) + flatten(s[1:])
+    else:
+        return [s[0]] + flatten(s[1:])
+</code></pre>
+
+            </div>
+        
+
+<div class="sol-highlight">
+The provided solution creates a new list <code>lst</code> in order to avoid mutating <code>s</code>. Our goal is to add each element in <code>s</code> to <code>lst</code> while preserving the flatness of <code>lst</code>.
+
+<p>If <code>lst</code> is a flat list and <code>elem</code> is not a list, then <code>lst + [elem]</code> will be a flat list:</p>
+
+<pre><code>&gt;&gt;&gt; lst = [1, 2, 3]
+&gt;&gt;&gt; elem = 4
+&gt;&gt;&gt; lst + [elem]
+[1, 2, 3, 4]                # flat!</code></pre>
+
+<p>But this won't work when <code>elem</code> is a list. For example:</p>
+
+<pre><code>&gt;&gt;&gt; lst = [1, 2, 3, 4]
+&gt;&gt;&gt; elem = [5, 6]
+&gt;&gt;&gt; lst + [elem]
+[1, 2, 3, 4, [5, 6]]        # deep! :(</code></pre>
+
+<p>If <code>lst</code> and <code>elem</code> are flat lists, then <code>lst + elem</code> will be flat:</p>
+
+<pre><code>&gt;&gt;&gt; lst = [1, 2, 3, 4]
+&gt;&gt;&gt; elem = [5, 6]
+&gt;&gt;&gt; lst + elem
+[1, 2, 3, 4, 5, 6]          # flat! :)</code></pre>
+
+<p>But what if <code>elem</code> is a deep list? Then <code>lst + elem</code> will be deep:</p>
+
+<pre><code>&gt;&gt;&gt; lst = [1]
+&gt;&gt;&gt; elem = [[2], 3]
+&gt;&gt;&gt; lst + elem
+&gt;&gt;&gt; [1, [2], 3]             # deep! &gt;:0</code></pre>
+
+<p>So we need to flatten <code>elem</code> before adding it to <code>lst</code>! This is where recursion comes into play.</p>
+
+<pre><code>&gt;&gt;&gt; lst = [1]
+&gt;&gt;&gt; elem = [[2], 3]
+&gt;&gt;&gt; lst + flatten(elem)
+&gt;&gt;&gt; [1, 2, 3]               # flat! (＾▽＾)</code></pre>
+
+<p>In conclusion, we perform <code>lst += [elem]</code> when <code>elem</code> is not a list and <code>lst += flatten(elem)</code> when <code>elem</code> is a list.</p>
+
+<p>Note that <code>flatten([5, 6]) == [5, 6]</code>, so calling <code>flatten(elem)</code> is unnecessary but harmless when <code>elem</code> is a shallow list.</p>
+
+</div>
+
+
+<script>
+    $('.alwaystoggle').css('display', 'inline-block');
+    $('.alwaystoggle').click(function() {
+      var solution_id = $(this).attr('id');
+      $('div.' + solution_id).slideToggle(600);
+    });
+</script>
+
+  </div>
+
+  <div class='col-md-3 sticky'>
+    <nav class='hidden-print hidden-sm hidden-xs sidebar'>
+      <ul>
+  <li><a href="#tree-recursion">Tree Recursion</a></li>
+  <ul>
+    <li><a href="#q1-count-stair-ways">Q1: Count Stair Ways</a></li>
+    <li><a href="#q2-count-k">Q2: Count K</a></li>
+    <li><a href="#q3-insect-combinatorics">Q3: Insect Combinatorics</a></li>
+    <li><a href="#q4-max-product">Q4: Max Product</a></li>
+    <li><a href="#q5-flatten">Q5: Flatten</a></li>
+  </ul>
+</ul>
+    </nav>
+  </div>
+</div>
+
+    </main>
+
+    <footer class="container">
+      <div class="row text-center">
+        <div class="col col-sm-4">
+          <h3><a href="/">CS 61A</a></h3>
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/weekly">Weekly Schedule</a></li>
+            <li><a href="/office-hours">Office Hours</a></li>
+            <li><a href="/staff">Staff</a></li>
+          </ul>
+        </div>
+        <div class="col col-sm-4">
+          <h3><a href="/resources">Resources</a></h3>
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/articles/studying">Studying Guide</a></li>
+            <li><a href="/articles/debugging">Debugging Guide</a></li>
+            <li><a href="/articles/composition">Composition Guide</a></li>
+            <li><a href="/articles/pair-programming">Pair Programming</a></li>
+          </ul>
+        </div>
+        <div class="col col-sm-4">
+          <h3><a href="/articles/about">Policies</a></h3>
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/articles/about#assignments">Assignments</a></li>
+            <li><a href="/articles/about#exams">Exams</a></li>
+            <li><a href="/articles/about#grading">Grading</a></li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/loader.min.js"></script>
+  <link rel="stylesheet" data-name="vs/editor/editor.main" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/editor/editor.main.min.css">
+  <script>
+      require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs' }});
+      window.MonacoEnvironment = { getWorkerUrl: () => URL.createObjectURL(new Blob([`
+      self.MonacoEnvironment = {
+          baseUrl: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min'
+      };
+      importScripts('https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/base/worker/workerMain.min.js');
+  `], { type: 'text/javascript' }))
+  };
+  </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.15.5/js/jsplumb.min.js"></script>
+    <script src="/assets/js/network_storage.js"></script>
+    <script src="/assets/js/storable.js"></script>
+    <script src="/assets/js/editor.js"></script>
+    <script src="/assets/js/copy-button.js"></script>
+    <script src="/assets/js/env-diagram.js"></script>
+    
+<script src="/assets/js/sketchy.js"></script>
+<script>
+  $('.sidebar ul').addClass('nav nav-stacked noselect');
+  $('body').scrollspy({
+    target: '.sidebar',
+    offset: 40
+  });
+
+  function goToId(id) {
+    var target = $(id);
+    target.parent().show();
+    $('html,body').animate({
+      scrollTop: target.offset().top,
+    }, 100);
+    $("body").scrollspy('refresh');
+  }
+
+  if (location.hash) {
+    setTimeout(function() {
+      if (location.hash) {
+        goToId(location.hash);
+      }
+    }, 1);
+  }
+
+  $("a").click(function(event) {
+    var urlBeforeHashRegEx = new RegExp("^"+window.location.href.split("#")[0]);
+    if (/^#/.test(this.hash) && urlBeforeHashRegEx.test(this.href)) {
+      event.preventDefault();
+      goToId(this.hash);
+      document.location.hash = this.hash;
+    }
+  });
+</script>
+
+  </body>
+</html>
